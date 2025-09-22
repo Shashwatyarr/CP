@@ -7,26 +7,59 @@ int main()
     cin >> t;
     while (t--)
     {
-        int n;
-        cin >> n;
-        vector<int> a(2 * n + 1, 0);
-        vector<bool> vis(2 * n + 1, 0);
-        int cur = 1;
-        for (int i = n; i >= 1; i--)
+        int n, m;
+        cin >> n >> m;
+        vector<vector<int>> a(n);
+        vector<int> cnt(m + 1, 0);
+        for (int i = 0; i < n; i++)
         {
-            while (vis[cur])
-                cur++;
-            int c = cur;
-            int b = c + i;
-            while (b <= 2 * n && vis[b])
-                b += i;
-            a[c] = a[b] = i;
-            vis[c] = vis[b] = 1;
+            int l;
+            cin >> l;
+            a[i].resize(l);
+            for (int j = 0; j < l; j++)
+            {
+                cin >> a[i][j];
+                cnt[a[i][j]]++;
+            }
         }
-        for (int i = 1; i <= 2 * n; ++i)
+        bool f = 1;
+        for (int i = 1; i <= m; i++)
         {
-            cout << a[i] << " ";
+            if (cnt[i] == 0)
+            {
+                f = 0;
+                break;
+            }
         }
-        cout << endl;
+        if (!f)
+        {
+            cout << "NO" << endl;
+            continue;
+        }
+        int b = 0;
+        for (int i = 0; i < n; i++)
+        {
+            bool f1 = 0;
+            for (int x : a[i])
+            {
+                if (cnt[x] == 1)
+                {
+                    f1 = true;
+                    break;
+                }
+            }
+            if (!f1)
+            {
+                b++;
+            }
+        }
+        if (b >= 2)
+        {
+            cout << "YES" << endl;
+        }
+        else
+        {
+            cout << "NO" << endl;
+        }
     }
 }
