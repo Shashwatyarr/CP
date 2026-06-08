@@ -24,63 +24,48 @@ void fastio(){
 }
 
 
-bool comp(vector<int>& a,vector<int> & b){
-    int ma=0,mb=0;
-    for(auto it:a) ma=max(ma,it);
-    for(auto it:b) mb=max(mb,it);
-    return ma<mb;
-}
-
-bool poss(vector<vector<int>>& a,int mid){
-    for(int i=0;i<a.size();i++){
-        for(int j=0;j<a[i].size();j++){
-            if(a[i][j]>=mid)return 0;
-            else mid++;
-        }
-    }
-    return 1;
-}
-
-void solve(){
+void solve() {
     int n;
-    cin>>n;
-    int tm=0;
-    vector<vector<int>> a(n);
-    for(int i=0;i<n;i++){
-        int k;
-        cin>>k;
-        for(int j=0;j<k;j++){
-            int v;
-            cin>>v;
-            tm=max(tm,v);
-            a[i].pb(v);
-        }
-    }
-    sort(a.begin(),a.end(),comp);
-    int r=tm,l=0;
-    int ans=tm;
-    while(l<=r){
-        int mid=(l+r)/2;
-        if(poss(a,mid)){
-            ans=mid;
-            r=mid-1;
-        }
-        else{
-            l=mid+1;
-        }
-    }
-    cout<<ans<<endl;
+    cin >> n;
     
+    vector<pair<long long, long long>> c(n);
+    
+    for (int i = 0; i < n; i++) {
+        long long k;
+        cin >> k;
+        
+        long long r = 0;
+        for (int j = 0; j < k; j++) {
+            long long a;
+            cin >> a;
+            r = max(r, a - j + 1);
+        }
+        
+        c[i] = {r, k};
+    }
+    
+    sort(c.begin(), c.end());
+    
+    long long p = 0;
+    long long q = 0;
+    
+    for (int i = 0; i < n; i++) {
+        if (q < c[i].first) {
+            long long d = c[i].first - q;
+            p += d;
+            q += d;
+        }
+        q += c[i].second;
+    }
+    
+    cout << p << "\n";
 }
-
 
 int main() {
     fastio();
     int t;
-    cin>>t;
-    while(t--){
-        solve();
-    }
+    cin >> t;
+    while (t--) solve();
     
     return 0;
 }
